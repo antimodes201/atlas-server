@@ -1,4 +1,9 @@
 # Atlas-server
+WARNING
+
+DUE TO CURRENT ISSUES WITH THE LINUX SERVER BUILD THIS NO LONGER WORKS.
+THIS REPO WILL BE UPDATE UPON RESOLUTION OF THE LINUX SERVER BUILD BY GRAPESHOT.
+ 
 Docker container for a basic 2x2 Atlas Server
 
 Build to create a containerized version of the dedicated server for Atlas
