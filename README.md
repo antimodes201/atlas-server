@@ -1,16 +1,15 @@
 # Atlas-server
-WARNING
-
-DUE TO CURRENT ISSUES WITH THE LINUX SERVER BUILD THIS NO LONGER WORKS.
-THIS REPO WILL BE UPDATE UPON RESOLUTION OF THE LINUX SERVER BUILD BY GRAPESHOT.
+WARNING WARNING WARNING
  
-Docker container for a basic 2x2 Atlas Server
+The linux build now works after Grapshot changes in  406.7.  HOWEVER their build utilizes a severly out of date open SSL library.  In order to work this libray had to be used.
+ 
+Docker container for a basic Atlas Server
 
 Build to create a containerized version of the dedicated server for Atlas
 https://store.steampowered.com/app/834910/ATLAS/
  
-Image is built off Atlas Manager Tools by BoiseComputer (https://github.com/BoiseComputer/atlas-server-tools)
-
+The current build does not use a contained redis instance.  This will be added in the future.  In the interim I would recommend using a seperate container for redis: https://hub.docker.com/_/redis
+ 
 Build by hand
 ```
 git clone https://github.com/antimodes201/atlas-server.git
@@ -23,24 +22,30 @@ docker pull antimodes201/atlas-server
 ```
  
 Docker Run with defaults 
-change the volume options to a directory on your node and maybe use a different name then the one in the example
+Each container is its own grid instance.  The primary instance should be launched the with TYPE="MASTER" environment variable.  All other instances should be launched using TYPE="SECONDARY".  All instances should be shut down before the master is rebooted as this will check for updates.
  
 ```
-docker rm atlas
 docker run -it \
--p 5750-5759:5750-5759/udp \
--p 57550-57554:57550-57554/udp \
--p 27000-27003:27000-27003/udp \
--p 32330-32330:32330-32330 \
--v /app/docker/temp-vol:/atlas \
--e INSTANCE_NAME="T3stN3t" \
+-p 5750:5750/udp \
+-p 57550:57550/udp \
+-p 27000:27000/udp \
+-p 26000:26000 \
+-v /app/docker/temp-vol:/app \
+-e INSTANCE_NAME="MASTER" \
 --name atlas \
 antimodes201/atlas-server:latest
 ```
  
-You will need to run the container once to force an install.  Once installed you will find atlasmanager.cfg in youe mounted volume which can be used to modify the base config.  You will likely need to update atlas_SeamlessIP= to your public IP as docker has issues identifying your external IP.
-Map instance configs can be found in instances.
+You will need to run the container once to force an install.  Once the MASTER is run once you can add your custom ServerGrid to the persistent mount.  Additional containers can then be spun up to allow for additional grid instances by changing ServerX and ServerY environment variables.
   
 Currently exposed environmental variables and their default values.
-- INSTANCE_NAME default
-- TZ America/New_York
+ENV BRANCH "public"
+ENV QUERY_PORT 57550
+ENV GAME_PORT_1 5750
+ENV GAME_PORT_2 5751
+ENV SEAMLESS_PORT 27000
+ENV RCON_PORT 26000
+ENV TZ "America/New_York"
+ENV TYPE "MASTER"
+ENV ServerX "0"
+ENV ServerY "0"
