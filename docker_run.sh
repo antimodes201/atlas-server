@@ -7,7 +7,7 @@ docker run -it \
 -p 57550-57554:57550-57554/udp \
 -p 27000-27003:27000-27003/udp \
 -p 32330-32330:32330-32330 \
--v /app/docker/temp-vol:/atlas \
--e INSTANCE_NAME="T3stN3t Test" \
+-v /app/docker/temp-vol:/app \
+-e TYPE="MASTER" \
 --name atlas \
 antimodes201/atlas-server:latest
