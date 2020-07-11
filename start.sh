@@ -9,7 +9,7 @@ then
 	#need to port a redis instance into this segment
 fi
 
-# -automanagedmods fixes
+# -automanagedmods fixes - no longer required
 #if [ ! -f  /app/Engine/Binaries/ThirdParty/SteamCMD/Linux ]
 #then
 #	ln -s /steamcmd/ /app/Engine/Binaries/ThirdParty/SteamCMD/Linux
@@ -20,4 +20,4 @@ fi
 # Launch Server
 # Variables pulled from Docker environment
 cd /app/ShooterGame/Binaries/Linux
-/app/ShooterGame/Binaries/Linux/ShooterGameServer Ocean?ServerX=${ServerX}?ServerY=${ServerY}?AltSaveDirectoryName?${ServerX}_${ServerY}?QueryPort=${QUERY_PORT}?${ADDITIONAL_OPTS} ${ADDITIONAL_ARGS} -NoBattlEye -server -log
+/app/ShooterGame/Binaries/Linux/ShooterGameServer Ocean?ServerX=${ServerX}?ServerY=${ServerY}?AltSaveDirectoryName=${ServerX}_${ServerY}?QueryPort=${QUERY_PORT}?${ADDITIONAL_OPTS} ${ADDITIONAL_ARGS} -NoBattlEye -server -log
